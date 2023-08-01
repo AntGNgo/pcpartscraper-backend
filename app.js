@@ -1,11 +1,23 @@
 import puppeteer from "puppeteer";
 import fs from "fs";
+import readline from "readline";
 
 (async () => {
-  const browser = await puppeteer.launch({ headless: true });
+  const browser = await puppeteer.launch({ headless: false });
   const page = await browser.newPage();
 
-  const query = "4080";
+  const reader = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout,
+  });
+  let query = "";
+
+  while (query === "") {
+    console.log("Search: ");
+    reader.on("line", (line) => {
+      query = line;
+    });
+  }
 
   await page.goto(`https://pcpartpicker.com/search/?q=${query}`);
 
